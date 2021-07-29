@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="borderPane" prefHeight="500.0" prefWidth="700.0"
+  xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+  <center>
+    <TitledPane alignment="CENTER" collapsible="false" text="Шаг 2. Cервер приложений"
+      BorderPane.alignment="CENTER">
+      <content>
+        <VBox spacing="15.0">
+          <children>
+            <GridPane hgap="15.0" vgap="15.0">
+              <children>
+                <Label text="Адрес сервера" GridPane.rowIndex="1"/>
+                <TextField fx:id="serverAddress" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+              </children>
+              <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" minWidth="10.0"/>
+                <ColumnConstraints hgrow="ALWAYS" minWidth="10.0"/>
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" vgrow="NEVER"/>
+              </rowConstraints>
+              <VBox.margin>
+                <Insets left="40.0" right="40.0"/>
+              </VBox.margin>
+            </GridPane>
+            <Label alignment="CENTER"
+              text="Пример на ссылку на сервер: http://192.168.169.209:8080/ReestrServiceRelease"/>
+            <Label alignment="CENTER"
+              text="После нажатия на кнопку далее, будет произведена проверка подключения."/>
+          </children>
+        </VBox>
+      </content>
+      <BorderPane.margin>
+        <Insets left="50.0" right="50.0"/>
+      </BorderPane.margin>
+    </TitledPane>
+  </center>
+  <bottom>
+    <HBox alignment="CENTER_RIGHT" spacing="20">
+      <padding>
+        <Insets bottom="50" left="50" right="50"/>
+      </padding>
+      <Button fx:id="returnBtn" mnemonicParsing="false" onAction="#goBack" text="Назад"
+        BorderPane.alignment="BOTTOM_RIGHT">
+        <BorderPane.margin>
+          <Insets bottom="50.0" left="50.0" right="50.0"/>
+        </BorderPane.margin>
+      </Button>
+      <Button fx:id="proceedBtn" mnemonicParsing="false" onAction="#checkServer" text="Далее"
+        BorderPane.alignment="BOTTOM_RIGHT">
+        <BorderPane.margin>
+          <Insets bottom="50.0" left="50.0" right="50.0"/>
+        </BorderPane.margin>
+      </Button>
+    </HBox>
+  </bottom>
+</BorderPane>

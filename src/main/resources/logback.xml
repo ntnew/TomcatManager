@@ -1,0 +1,35 @@
+<!--<configuration scan="true" scanPeriod="15 seconds">  -->
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{0}:%line - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <property name="FILE_NAME" value="barsim_client"/>
+    <property name="LOG_DIR" value="."/>
+
+    <!--  Это переопределяется системными свойствами-->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/${FILE_NAME}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${FILE_NAME}.%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <!-- keep 10 days' worth of history capped at 100MB total size -->
+            <maxHistory>10</maxHistory>
+            <totalSizeCap>100MB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{0}:%line - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger level="debug" name="ru.barsim"/>
+
+    <root level="WARN">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>
