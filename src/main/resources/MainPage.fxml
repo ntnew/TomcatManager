@@ -32,17 +32,17 @@
               <columns>
                 <TableColumn fx:id="nameColumn" text="Наименование" editable="false">
                   <cellValueFactory>
-                    <PropertyValueFactory property="elemTypeName"/>
+                    <PropertyValueFactory property="name"/>
                   </cellValueFactory>
                 </TableColumn>
-                <TableColumn fx:id="pathColumn" text="Тип">
+                <TableColumn fx:id="pathColumn" text="Путь">
                   <cellValueFactory>
-                    <PropertyValueFactory property="fnsTemplateId"/>
+                    <PropertyValueFactory property="path"/>
                   </cellValueFactory>
                 </TableColumn>
-                <TableColumn fx:id="statusColumn" text="Тип">
+                <TableColumn fx:id="statusColumn" text="Статус">
                   <cellValueFactory>
-                    <PropertyValueFactory property="fnsTemplateId"/>
+                    <PropertyValueFactory property="status"/>
                   </cellValueFactory>
                 </TableColumn>
               </columns>
