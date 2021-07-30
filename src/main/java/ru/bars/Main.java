@@ -4,9 +4,8 @@ import java.net.URL;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * Приложение
@@ -33,10 +32,10 @@ public class Main extends Application {
     try {
       URL fxmlURL = getClass().getClassLoader().getResource("MainPage.fxml");
       FXMLLoader loader = new FXMLLoader(fxmlURL);
-      VBox loginBox = loader.load();
-      primaryStage.setTitle("Вход в систему");
+      BorderPane loginBox = loader.load();
+      primaryStage.setTitle("Томкат Манагер");
       primaryStage.setScene(new Scene(loginBox));
-      primaryStage.setResizable(false);
+      primaryStage.setResizable(true);
       primaryStage.show();
     } catch (Exception e) {
       e.printStackTrace();
