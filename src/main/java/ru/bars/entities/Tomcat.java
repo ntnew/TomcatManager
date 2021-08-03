@@ -4,6 +4,7 @@ import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.bars.commonDirs.BarsimDirectory;
 
 @Data
 @NoArgsConstructor
@@ -14,5 +15,6 @@ public class Tomcat {
   private String name;
   private String path;
   private Status status;
+  private BarsimDirectory barsimDirectory;
 
 }

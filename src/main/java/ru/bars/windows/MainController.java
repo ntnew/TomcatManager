@@ -17,6 +17,7 @@ import javafx.scene.layout.BorderPane;
 import ru.bars.Main;
 import ru.bars.entities.Status;
 import ru.bars.entities.Tomcat;
+import ru.bars.windows.AddWindow.AddWindow;
 
 public class MainController {
 
@@ -40,12 +41,22 @@ public class MainController {
   }
 
   public void addTomcat(ActionEvent event) {
-    Main.data.add(new Tomcat(){{
-      setId(UUID.randomUUID());
-      setName("hui");
-      setPath("path");
-      setStatus(Status.DISABLED);
-    }});
+    try {
+      AddWindow addWindow = new AddWindow();
+      addWindow.showAndWait();
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+//    Main.data.add(new Tomcat(){{
+//      setId(UUID.randomUUID());
+//      setName("hui");
+//      setPath("path");
+//      setStatus(Status.DISABLED);
+//    }});
+    table.getItems().clear();
+    table.setItems(FXCollections.observableArrayList(Main.data));
   }
 
   private void loadData() throws IOException {
