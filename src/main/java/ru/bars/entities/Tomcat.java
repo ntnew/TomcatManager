@@ -1,5 +1,6 @@
 package ru.bars.entities;
 
+import java.io.Serializable;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +10,7 @@ import ru.bars.commonDirs.BarsimDirectory;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Tomcat {
+public class Tomcat implements Serializable, Cloneable {
 
   private UUID id;
   private String name;

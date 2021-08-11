@@ -1,22 +1,15 @@
 package ru.bars;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import ru.bars.entities.Tomcat;
+import ru.bars.entities.TomcatProcess;
 
 /**
  * Приложение
@@ -27,6 +20,7 @@ public class Main extends Application {
   public static final String FILE_NAME = "./data";
 
   public static ArrayList<Tomcat> data = new ArrayList<>();
+
   /**
    * Точка входа в приложение
    *

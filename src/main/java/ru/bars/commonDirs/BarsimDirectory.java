@@ -22,12 +22,5 @@ public class BarsimDirectory extends Directory {
     super(parent, DIR_NAME);
   }
 
-  /**
-   * Распаковать клиента из серверного приложения в эту директорию
-   * @return клиент
-   */
-  public BarsimClient unpackClient() throws ZipException {
-    tomcat.clientZip.extractAll(client.getAbsolutePath());
-    return client;
-  }
+
 }
