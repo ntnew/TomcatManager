@@ -99,20 +99,8 @@ public class MainController {
     try {
 //      Step step = () -> table.getSelectionModel().getSelectedItem().getBarsimDirectory().tomcat.start();
       TomThread tt = new TomThread(table.getSelectionModel().getSelectedItem(), true);
-      tt.setPriority(Thread.MAX_PRIORITY);
       tt.start();
-//      step.perform();
-//      Platform.runLater(() -> {
-//        try {
-//          Thread.sleep(5000);
-//          Main.initStage();
-//          Main.primaryStage.show();
-//          loadData();
-//          updateData();
-//        } catch (InterruptedException | IOException e) {
-//          e.printStackTrace();
-//        }
-//      });
+
 
     } catch (Exception e) {
       e.printStackTrace();

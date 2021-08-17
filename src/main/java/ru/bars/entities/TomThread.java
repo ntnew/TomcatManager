@@ -32,17 +32,12 @@ public class TomThread extends Thread {
         ProcessBuilder pb = new ProcessBuilder(command);
         pb.directory(tomcat.getBarsimDirectory().tomcat);
         Process start = pb.start();
-
         Main.processes.add(new TomcatProcess(tomcat.getId(), start));
       } else {
         TomcatProcess tomcatProcess = CollectionsHelper
             .firstOrNull(Main.processes, x -> x.getId().equals(tomcat.getId()));
         tomcatProcess.getProcess().destroy();
       }
-
-//      for (int i = 0; i < 10; i++) {
-//        Thread.sleep(10000);
-//      }
     } catch (IOException e) {
       e.printStackTrace();
     }
