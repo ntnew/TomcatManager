@@ -4,26 +4,30 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 import ru.bars.Main;
+import ru.bars.Step;
 import ru.bars.entities.TomThread;
 import ru.bars.entities.Tomcat;
 import ru.bars.entities.TomcatProcess;
 import ru.bars.windows.AddWindow.AddWindow;
-import ru.bars.windows.progressIndicator.ProgressIndicatorWindow;
 
 public class MainController {
+
   public static ArrayList<TomcatProcess> processes = new ArrayList<>();
 
   public BorderPane content;
@@ -32,6 +36,7 @@ public class MainController {
   public void initialize() {
     try {
       loadData();
+      updateData();
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -61,7 +66,7 @@ public class MainController {
   private void loadData() throws IOException {
     try {
       Gson gson = new GsonBuilder().create();
-
+      Main.data.clear();
       StringBuilder dataStringBuilder = new StringBuilder();
       Files.lines(Paths.get(Main.FILE_NAME), StandardCharsets.UTF_8)
           .forEach(line -> dataStringBuilder.append(line).append("\n"));
@@ -70,7 +75,6 @@ public class MainController {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    updateData();
   }
 
   private void updateData() {
@@ -91,36 +95,36 @@ public class MainController {
   }
 
   public void startupService(ActionEvent event) {
-    TomThread tomThread = new TomThread(table.getSelectionModel().getSelectedItem(), true);
-    tomThread.start();
+
     try {
-      updateData();
-      Thread.sleep(2000);
-      updateData();
-    } catch (InterruptedException e) {
+//      Step step = () -> table.getSelectionModel().getSelectedItem().getBarsimDirectory().tomcat.start();
+      TomThread tt = new TomThread(table.getSelectionModel().getSelectedItem(), true);
+      tt.setPriority(Thread.MAX_PRIORITY);
+      tt.start();
+//      step.perform();
+//      Platform.runLater(() -> {
+//        try {
+//          Thread.sleep(5000);
+//          Main.initStage();
+//          Main.primaryStage.show();
+//          loadData();
+//          updateData();
+//        } catch (InterruptedException | IOException e) {
+//          e.printStackTrace();
+//        }
+//      });
+
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
   public void shutdownService(ActionEvent event) {
-    Tomcat selectedItem = table.getSelectionModel().getSelectedItem();
-    TomThread tomThread = new TomThread(selectedItem, false);
-    tomThread.start();
     try {
-      Thread.sleep(10000);
-      new Thread(){{
-        List<TomcatProcess> collect = processes.stream().filter(x -> x.getId().equals(selectedItem.getId()))
-            .collect(Collectors.toList());
-        if (!collect.isEmpty()){
-          Process process = collect.get(0).getProcess();
-          System.out.println(process.isAlive());
-          process.destroy();
-          System.out.println(process.isAlive());
-        }
-      }}.start();
-      updateData();
-
-    } catch (InterruptedException e) {
+      TomThread tt = new TomThread(table.getSelectionModel().getSelectedItem(), false);
+      tt.setPriority(Thread.MAX_PRIORITY);
+      tt.start();
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }

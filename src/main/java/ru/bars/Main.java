@@ -21,6 +21,10 @@ public class Main extends Application {
 
   public static ArrayList<Tomcat> data = new ArrayList<>();
 
+  public static ArrayList<TomcatProcess> processes = new ArrayList<>();
+
+  public static Stage primaryStage;
+
   /**
    * Точка входа в приложение
    *
@@ -45,12 +49,18 @@ public class Main extends Application {
   }
 
   private void loadAndShowMainStage(Stage primaryStage) throws IOException {
-    URL fxmlURL = getClass().getClassLoader().getResource("MainPage.fxml");
+    Main.primaryStage = primaryStage;
+    initStage();
+    Main.primaryStage.show();
+  }
+
+  public static void initStage() throws IOException {
+    URL fxmlURL = Main.class.getClassLoader().getResource("MainPage.fxml");
     FXMLLoader loader = new FXMLLoader(fxmlURL);
     BorderPane loginBox = loader.load();
-    primaryStage.setTitle("Томкат Манагер");
-    primaryStage.setScene(new Scene(loginBox));
-    primaryStage.setResizable(true);
-    primaryStage.show();
+    Main.primaryStage.setTitle("Томкат Манагер");
+    Main.primaryStage.setScene(new Scene(loginBox));
+    Main.primaryStage.setResizable(true);
   }
+
 }

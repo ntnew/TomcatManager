@@ -44,20 +44,25 @@ public class TomcatDir extends Directory {
   /**
    * Запустить сервер приложений
    */
-  public Process start(UUID tomcatId) throws IOException, InterruptedException {
+  public void start() throws IOException, InterruptedException {
     File startupFile = file("bin/", WinLinuxUtils.startup());
     ProcessBuilder pb = new ProcessBuilder(startupFile.getAbsolutePath());
     pb.directory(this);
-    return pb.start();
+    Process start = pb.start();
+//    synchronized (Main.processes){
+//      Main.processes.add(new TomcatProcess(UUID.randomUUID(), start));
+//      System.out.println(Main.processes);
+//    }
   }
 
   /**
    * Выключить сервер приложений
    */
-  public void shutdown(UUID tomcatId) throws IOException, InterruptedException {
-    new Thread() {{
-
-    }}.start();
+  public void shutdown() throws IOException, InterruptedException {
+      File startupFile = file("bin/", WinLinuxUtils.shutdown());
+      ProcessBuilder pb = new ProcessBuilder(startupFile.getAbsolutePath());
+      pb.directory(this);
+      pb.start();
   }
 }
 //      BufferedReader input = new BufferedReader(new InputStreamReader(start.getInputStream()));

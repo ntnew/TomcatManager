@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import ru.bars.Main;
@@ -38,7 +39,7 @@ public class AddWindowController {
   }
 
   @FXML
-  private void chooseTomcatDir(ActionEvent event){
+  private void chooseTomcatDir(MouseEvent event){
     File dir = new DirectoryChooser().showDialog(path.getScene().getWindow());
     if (dir != null) {
       path.setText(dir.getAbsolutePath());
