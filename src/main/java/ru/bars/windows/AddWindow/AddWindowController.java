@@ -33,7 +33,7 @@ public class AddWindowController {
   public void addServer(ActionEvent event) {
     Tomcat tomcat = new Tomcat(UUID.randomUUID(), name.getText(), path.getText(), Status.DISABLED,
         new BarsimDirectory(new File(path.getText())));
-    Main.data.add(tomcat);
+    Main.TOMCATS_DATA.add(tomcat);
 
     ((Stage) path.getScene().getWindow()).close();
   }

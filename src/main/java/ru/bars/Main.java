@@ -17,13 +17,11 @@ import ru.bars.entities.TomcatProcess;
 
 public class Main extends Application {
 
-  public static final String FILE_NAME = "./data";
+  public static final String TOMCATS_DATA_FILENAME = "./data";
 
-  public static ArrayList<Tomcat> data = new ArrayList<>();
+  public static ArrayList<Tomcat> TOMCATS_DATA = new ArrayList<>();
 
   public static ArrayList<TomcatProcess> processes = new ArrayList<>();
-
-  public static Stage primaryStage;
 
   /**
    * Точка входа в приложение
@@ -42,25 +40,15 @@ public class Main extends Application {
   @Override
   public void start(Stage primaryStage) {
     try {
-      loadAndShowMainStage(primaryStage);
+      URL fxmlURL = getClass().getClassLoader().getResource("MainPage.fxml");
+      FXMLLoader loader = new FXMLLoader(fxmlURL);
+      BorderPane loginBox = loader.load();
+      primaryStage.setTitle("Томкат Манагер");
+      primaryStage.setScene(new Scene(loginBox));
+      primaryStage.setResizable(true);
+      primaryStage.show();
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
-
-  private void loadAndShowMainStage(Stage primaryStage) throws IOException {
-    Main.primaryStage = primaryStage;
-    initStage();
-    Main.primaryStage.show();
-  }
-
-  public static void initStage() throws IOException {
-    URL fxmlURL = Main.class.getClassLoader().getResource("MainPage.fxml");
-    FXMLLoader loader = new FXMLLoader(fxmlURL);
-    BorderPane loginBox = loader.load();
-    Main.primaryStage.setTitle("Томкат Манагер");
-    Main.primaryStage.setScene(new Scene(loginBox));
-    Main.primaryStage.setResizable(true);
-  }
-
 }

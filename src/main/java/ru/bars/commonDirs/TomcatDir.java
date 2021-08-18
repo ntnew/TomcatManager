@@ -49,10 +49,6 @@ public class TomcatDir extends Directory {
     ProcessBuilder pb = new ProcessBuilder(startupFile.getAbsolutePath());
     pb.directory(this);
     Process start = pb.start();
-//    synchronized (Main.processes){
-//      Main.processes.add(new TomcatProcess(UUID.randomUUID(), start));
-//      System.out.println(Main.processes);
-//    }
   }
 
   /**

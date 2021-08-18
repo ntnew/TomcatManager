@@ -4,23 +4,18 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
 import ru.bars.Main;
-import ru.bars.Step;
+import ru.bars.entities.Status;
 import ru.bars.entities.TomThread;
 import ru.bars.entities.Tomcat;
 import ru.bars.entities.TomcatProcess;
@@ -66,12 +61,12 @@ public class MainController {
   private void loadData() throws IOException {
     try {
       Gson gson = new GsonBuilder().create();
-      Main.data.clear();
+      Main.TOMCATS_DATA.clear();
       StringBuilder dataStringBuilder = new StringBuilder();
-      Files.lines(Paths.get(Main.FILE_NAME), StandardCharsets.UTF_8)
+      Files.lines(Paths.get(Main.TOMCATS_DATA_FILENAME), StandardCharsets.UTF_8)
           .forEach(line -> dataStringBuilder.append(line).append("\n"));
       Tomcat[] tomcats = gson.fromJson(dataStringBuilder.toString(), Tomcat[].class);
-      Main.data.addAll(Arrays.asList(tomcats));
+      Main.TOMCATS_DATA.addAll(Arrays.asList(tomcats));
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -79,16 +74,16 @@ public class MainController {
 
   private void updateData() {
     table.getItems().clear();
-    table.setItems(FXCollections.observableArrayList(Main.data));
+    table.setItems(FXCollections.observableArrayList(Main.TOMCATS_DATA));
     table.refresh();
   }
 
   private void saveData() {
     try {
       Gson gson = new GsonBuilder().create();
-      String s = gson.toJson(Main.data, new TypeToken<List<Tomcat>>() {
+      String s = gson.toJson(Main.TOMCATS_DATA, new TypeToken<List<Tomcat>>() {
       }.getType());
-      Files.write(Paths.get(Main.FILE_NAME), s.getBytes());
+      Files.write(Paths.get(Main.TOMCATS_DATA_FILENAME), s.getBytes());
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -97,30 +92,35 @@ public class MainController {
   public void startupService(ActionEvent event) {
 
     try {
-//      Step step = () -> table.getSelectionModel().getSelectedItem().getBarsimDirectory().tomcat.start();
-      TomThread tt = new TomThread(table.getSelectionModel().getSelectedItem(), true);
+      TomThread tt = new TomThread(getSelectedTomcat(), true);
       tt.start();
-
-
+      getSelectedTomcat().setStatus(Status.CHARGING);
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
+
   public void shutdownService(ActionEvent event) {
     try {
-      TomThread tt = new TomThread(table.getSelectionModel().getSelectedItem(), false);
+      TomThread tt = new TomThread(getSelectedTomcat(), false);
       tt.setPriority(Thread.MAX_PRIORITY);
       tt.start();
+      getSelectedTomcat().setStatus(Status.DISABLED);
+      table.refresh();
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
   public void deleteTomcat(ActionEvent event) {
-    Main.data.remove(table.getSelectionModel().getSelectedItem());
+    Main.TOMCATS_DATA.remove(table.getSelectionModel().getSelectedItem());
     updateData();
     saveData();
   }
 
+
+  private Tomcat getSelectedTomcat() {
+    return table.getSelectionModel().getSelectedItem();
+  }
 }

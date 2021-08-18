@@ -10,7 +10,6 @@ import ru.bars.entities.Tomcat;
 
 public class TomcatView {
 
-
   /**
    * Изначальный элемент
    */
@@ -35,7 +34,7 @@ public class TomcatView {
   /**
    * Конструктор на основе справочника
    *
-   * @param reference Справочник
+   * @param tomcat томкат
    */
   public TomcatView(Tomcat tomcat) {
     originalTomcat = tomcat;
