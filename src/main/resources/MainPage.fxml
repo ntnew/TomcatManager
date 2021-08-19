@@ -51,6 +51,11 @@
                     <PropertyValueFactory property="status"/>
                   </cellValueFactory>
                 </TableColumn>
+                <TableColumn fx:id="portColumn" text="Порт">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="port"/>
+                  </cellValueFactory>
+                </TableColumn>
               </columns>
             </TableView>
           </children>

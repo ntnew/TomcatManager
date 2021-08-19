@@ -31,6 +31,8 @@ public class TomcatView {
    */
   private final ObjectProperty<Status>  status = new SimpleObjectProperty<Status>();
 
+  private final StringProperty port = new SimpleStringProperty();
+
   /**
    * Конструктор на основе справочника
    *
@@ -48,21 +50,23 @@ public class TomcatView {
 
   }
 
-//  /**
-//   * Получение элемента
-//   *
-//   * @return Элемент
-//   */
-//  public Tomcat getUserQuery() {
-//    if (originalUserQuery == null) {
-//      originalUserQuery = new UserQuery();
-//    }
-//    originalUserQuery.setName(getName());
-//    originalUserQuery.setQuery(getQuery());
-//    originalUserQuery.setUserName(getUserName());
-//    originalUserQuery.setId(getId());
-//    return originalUserQuery;
-//  }
+  /**
+   * Получение элемента
+   *
+   * @return Элемент
+   */
+  public Tomcat getTomcat() {
+    if (originalTomcat == null) {
+      originalTomcat = new Tomcat();
+    }
+    originalTomcat.setName(getName());
+    originalTomcat.setPort(getPort());
+    originalTomcat.setPath(getPath());
+    originalTomcat.setId(getId());
+    originalTomcat.setStatus(getStatus());
+    originalTomcat.setPort(getPort());
+    return originalTomcat;
+  }
 
   /**
    * Заполнение из первоначального
@@ -72,6 +76,7 @@ public class TomcatView {
     setId(originalTomcat.getId());
     setPath(originalTomcat.getPath());
     setStatus(originalTomcat.getStatus());
+    setPort(originalTomcat.getPort());
   }
 
 
@@ -125,5 +130,17 @@ public class TomcatView {
 
   public void setStatus(Status status) {
     this.status.set(status);
+  }
+
+  public String getPort() {
+    return port.get();
+  }
+
+  public StringProperty portProperty() {
+    return port;
+  }
+
+  public void setPort(String port) {
+    this.port.set(port);
   }
 }

@@ -5,7 +5,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.ProcessBuilder.Redirect;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -44,7 +46,7 @@ public class TomcatDir extends Directory {
   /**
    * Запустить сервер приложений
    */
-  public void start() throws IOException, InterruptedException {
+  public void start() throws IOException {
     File startupFile = file("bin/", WinLinuxUtils.startup());
     ProcessBuilder pb = new ProcessBuilder(startupFile.getAbsolutePath());
     pb.directory(this);
@@ -55,31 +57,11 @@ public class TomcatDir extends Directory {
    * Выключить сервер приложений
    */
   public void shutdown() throws IOException, InterruptedException {
-      File startupFile = file("bin/", WinLinuxUtils.shutdown());
-      ProcessBuilder pb = new ProcessBuilder(startupFile.getAbsolutePath());
-      pb.directory(this);
-      pb.start();
+    File startupFile = file("bin/", WinLinuxUtils.shutdown());
+    ProcessBuilder pb = new ProcessBuilder(startupFile.getAbsolutePath());
+    pb.directory(this);
+    pb.start();
   }
-}
-//      BufferedReader input = new BufferedReader(new InputStreamReader(start.getInputStream()));
-//      String line;
-//      while ((line = input.readLine()) != null) {
-//        System.out.println(line);
-//      }
-//      input.close();
-//      System.out.println(start.waitFor());
-//      File startupFile = file("bin/", WinLinuxUtils.shutdown());
-//      String[] command = new String[]{"cmd.exe", "/C", "start", startupFile.getAbsolutePath()};
-//
-//      ProcessBuilder pb = new ProcessBuilder(command);
-//      pb.directory(file());
-//      Process start = pb.start();
 
-//      Process child = Runtime.getRuntime().exec(command);
-//      Main.processes.add(new TomcatProcess(tomcatId, start));
-//      BufferedReader input = new BufferedReader(new InputStreamReader(start.getInputStream()));
-//      while ((line = input.readLine()) != null) {
-//        System.out.println(line);
-//      }
-//      input.close();
-//      System.out.println(start.waitFor());
+
+}
