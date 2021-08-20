@@ -160,10 +160,12 @@ public class MainController {
    */
   public void startupService(ActionEvent event) {
     try {
-      TomThread tt = new TomThread(getSelectedTomcat(), true);
-      tt.start();
-      Platform.runLater(() -> getSelectedTomcatView().setStatus(Status.CHARGING));
-      new ProgressIndicatorWindow().show(() -> validate(10, 3000, getSelectedTomcat()));
+      if (getSelectedTomcatView().getStatus() == Status.DISABLED) {
+        TomThread tt = new TomThread(getSelectedTomcat(), true);
+        tt.start();
+        Platform.runLater(() -> getSelectedTomcatView().setStatus(Status.CHARGING));
+        new ProgressIndicatorWindow().show(() -> validate(10, 3000, getSelectedTomcat()));
+      }
     } catch (Exception e) {
       e.printStackTrace();
     }

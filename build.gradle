@@ -16,7 +16,7 @@ launch4j {
 //    splashFileName = "${projectDir}/src/main/resources/splash.bmp"
     bundledJrePath = "JRE_win"
     bundledJre64Bit = true
-    outputDir = "srvInstaller"
+    outputDir = "exe"
 }
 group 'org.example'
 version '1.0-SNAPSHOT'
