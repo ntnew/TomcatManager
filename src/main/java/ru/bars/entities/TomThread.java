@@ -56,6 +56,20 @@ public class TomThread extends Thread {
           String cmd = "taskkill /F /PID " + tomcatProcess.getProcess().pid();
           Runtime.getRuntime().exec(cmd);
           Main.processes.remove(tomcatProcess);
+        } else {
+          ProcessSaver processSaver = CollectionsHelper
+              .firstOrNull(Main.savedProcesses, x -> x.getTomId().equals(tomcat.getId()));
+          if (processSaver != null) {
+            for (int i = 0; i < processSaver.getPids().size(); i++) {
+              try {
+                String cmd = "taskkill /F /PID " + processSaver.getPids().get(i);
+                Runtime.getRuntime().exec(cmd);
+              } catch (IOException e) {
+                e.printStackTrace();
+              }
+            }
+            Main.savedProcesses.remove(processSaver);
+          }
         }
       }
     } catch (IOException e) {

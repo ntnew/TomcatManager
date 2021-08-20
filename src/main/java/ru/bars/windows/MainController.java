@@ -21,9 +21,11 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 import ru.bars.Main;
+import ru.bars.entities.ProcessSaver;
 import ru.bars.entities.Status;
 import ru.bars.entities.TomThread;
 import ru.bars.entities.Tomcat;
+import ru.bars.entities.TomcatProcess;
 import ru.bars.utils.CollectionsHelper;
 import ru.bars.utils.InstallStep;
 import ru.bars.windows.AddWindow.AddWindow;
@@ -38,8 +40,23 @@ public class MainController {
     try {
       loadData();
       updateData();
+      new ProgressIndicatorWindow().show(this::checkServers);
     } catch (IOException e) {
       e.printStackTrace();
+    }
+  }
+
+  /*
+   * Проверить, запущены ли сервера в таблице
+   */
+  private void checkServers() {
+    for (int i = 0; i < table.getItems().size(); i++) {
+      try {
+        TomcatView tomcatView = table.getItems().get(i);
+        validate(1, 1000, tomcatView.getTomcat());
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
     }
   }
 
@@ -51,6 +68,9 @@ public class MainController {
 
   }
 
+  /*
+   * клик по добавлению томката
+   */
   public void addTomcat(ActionEvent event) {
     try {
       AddWindow addWindow = new AddWindow();
@@ -63,7 +83,9 @@ public class MainController {
     }
   }
 
-
+  /*
+   * загрузить данные о томкатах
+   */
   private void loadData() throws IOException {
     try {
       Gson gson = new GsonBuilder().create();
@@ -71,14 +93,25 @@ public class MainController {
       StringBuilder dataStringBuilder = new StringBuilder();
       Files.lines(Paths.get(Main.TOMCATS_DATA_FILENAME), StandardCharsets.UTF_8)
           .forEach(line -> dataStringBuilder.append(line).append("\n"));
+      //установить значения портов для томкатов
       List<Tomcat> tomcats = Arrays.asList(gson.fromJson(dataStringBuilder.toString(), Tomcat[].class));
       tomcats.forEach(x -> x.setPort(getPort(x)));
+
       Main.TOMCATS_DATA.addAll(tomcats);
+
+      StringBuilder processesStringBuilder = new StringBuilder();
+      Files.lines(Paths.get("./processes"), StandardCharsets.UTF_8)
+          .forEach(line -> processesStringBuilder.append(line).append("\n"));
+      Main.savedProcesses.addAll(Arrays.asList(gson.fromJson(processesStringBuilder.toString(), ProcessSaver[].class)));
+
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
+  /*
+   * получить порт для томката
+   */
   public String getPort(Tomcat tomcat) {
     String pattern = "<Connector port=\"";
     StringBuilder port = new StringBuilder();
@@ -97,6 +130,9 @@ public class MainController {
     return port.toString();
   }
 
+  /*
+   * обновить данные
+   */
   private void updateData() {
     table.getItems().clear();
     List<TomcatView> kbkOnYears =
@@ -105,6 +141,9 @@ public class MainController {
     table.refresh();
   }
 
+  /*
+   * Сохранить данные о томкатах в файл
+   */
   private void saveData() {
     try {
       Gson gson = new GsonBuilder().create();
@@ -116,6 +155,9 @@ public class MainController {
     }
   }
 
+  /*
+   * запустить томкат
+   */
   public void startupService(ActionEvent event) {
     try {
       TomThread tt = new TomThread(getSelectedTomcat(), true);
@@ -127,7 +169,9 @@ public class MainController {
     }
   }
 
-
+  /*
+   * выключить томкат
+   */
   public void shutdownService(ActionEvent event) {
     try {
       TomThread tt = new TomThread(getSelectedTomcat(), false);
@@ -138,6 +182,9 @@ public class MainController {
     }
   }
 
+  /*
+   * удалить данные о томкате
+   */
   public void deleteTomcat(ActionEvent event) {
     Main.TOMCATS_DATA.remove(getSelectedTomcat());
     updateData();
@@ -158,23 +205,36 @@ public class MainController {
     for (int i = 1; i <= trys; i++) {
       try {
         step.perform();
-        getSelectedTomcatView().setStatus(Status.ENABLED);
+        getTomcatViewByTomcat(tomcat).setStatus(Status.ENABLED);
         return;
       } catch (Exception e) {
         if (i == trys) {
+          getTomcatViewByTomcat(tomcat).setStatus(Status.DISABLED);
           throw e;
         }
         Thread.sleep(timeout);
       }
     }
-    getSelectedTomcatView().setStatus(Status.DISABLED);
   }
 
+  /*
+   * получить выбранный в таблице томкат
+   */
   private Tomcat getSelectedTomcat() {
     return getSelectedTomcatView().getTomcat();
   }
 
+  /*
+   * получить выбранный в таблице томкат вьюшку
+   */
   private TomcatView getSelectedTomcatView() {
     return table.getSelectionModel().getSelectedItem();
+  }
+
+  /*
+   * получить выбранный в таблице томкат вьюшку
+   */
+  private TomcatView getTomcatViewByTomcat(Tomcat tomcat) {
+    return CollectionsHelper.first(table.getItems(), x -> x.getId().equals(tomcat.getId()));
   }
 }

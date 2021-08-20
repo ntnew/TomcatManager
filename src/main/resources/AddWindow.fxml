@@ -38,9 +38,9 @@
               </VBox.margin>
             </GridPane>
             <Label alignment="CENTER"
-              text="Пример на ссылку на сервер: http://192.168.169.209:8080/ReestrServiceRelease"/>
+              text="Пример пути на сервер: E:\testSrv"/>
             <Label alignment="CENTER"
-              text="После нажатия на кнопку далее, будет произведена проверка подключения."/>
+              text="В этой папке должна быть папка barsim_dir"/>
           </children>
         </VBox>
       </content>
