@@ -64,7 +64,7 @@ public class Main extends Application {
     }
   }
 
-  private void saveProcessesPids(WindowEvent windowEvent) {
+  public void saveProcessesPids(WindowEvent windowEvent) {
     try {
       Gson gson = new GsonBuilder().create();
       List<ProcessSaver> ps = new ArrayList<>(savedProcesses);

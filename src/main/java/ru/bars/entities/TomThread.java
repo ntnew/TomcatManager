@@ -1,7 +1,13 @@
 package ru.bars.entities;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import ru.bars.Main;
@@ -69,6 +75,17 @@ public class TomThread extends Thread {
               }
             }
             Main.savedProcesses.remove(processSaver);
+            Gson gson = new GsonBuilder().create();
+            List<ProcessSaver> ps = new ArrayList<>(Main.savedProcesses);
+            Main.processes.forEach(x-> {
+              List<String> pids = new ArrayList<>();
+              pids.add(x.getProcess().pid()+"");
+              x.getProcess().children().forEach(y ->  pids.add(y.pid()+""));
+              ps.add(new ProcessSaver(x.getId(), pids));
+            });
+            String s = gson.toJson(ps, new TypeToken<List<ProcessSaver>>() {
+            }.getType());
+            Files.write(Paths.get("./processes"), s.getBytes());
           }
         }
       }
